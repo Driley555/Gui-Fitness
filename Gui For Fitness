@@ -6,57 +6,83 @@ class FitnessTrackerApp:
         self.master = master
         self.master.title("Fitness Tracker")
 
-        # Variables for workout logging
+        # Initialize variables
         self.workout_duration = tk.StringVar()
         self.workout_intensity = tk.StringVar()
         self.calories_burned = tk.StringVar()
-
-        # Variables for nutrition monitoring
         self.food_entry = tk.StringVar()
 
-        self.create_widgets()
+        # Create main frames
+        self.create_navigation()
+        self.create_workout_logging()
+        self.create_nutrition_monitoring()
 
-    def create_widgets(self):
+    def create_navigation(self):
+        # Navigation buttons
+        navigation_frame = tk.Frame(self.master)
+        navigation_frame.pack(pady=10)
+
+        workout_button = tk.Button(navigation_frame, text="Workout Logging", command=self.show_workout_frame)
+        workout_button.grid(row=0, column=0, padx=10)
+
+        nutrition_button = tk.Button(navigation_frame, text="Nutrition Monitoring", command=self.show_nutrition_frame)
+        nutrition_button.grid(row=0, column=1, padx=10)
+
+    def create_workout_logging(self):
         # Workout Logging Section
-        workout_frame = tk.LabelFrame(self.master, text="Workout Logging", padx=10, pady=10)
-        workout_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+        self.workout_frame = tk.LabelFrame(self.master, text="Workout Logging", padx=10, pady=10)
 
         # Workout Entry Widgets
-        tk.Label(workout_frame, text="Duration (mins):").grid(row=0, column=0, padx=5, pady=5, sticky=tk.E)
-        tk.Entry(workout_frame, textvariable=self.workout_duration).grid(row=0, column=1, padx=5, pady=5)
+        tk.Label(self.workout_frame, text="Duration (mins):").grid(row=0, column=0, padx=5, pady=5, sticky=tk.E)
+        tk.Entry(self.workout_frame, textvariable=self.workout_duration).grid(row=0, column=1, padx=5, pady=5)
 
-        tk.Label(workout_frame, text="Intensity (1-10):").grid(row=1, column=0, padx=5, pady=5, sticky=tk.E)
-        tk.Entry(workout_frame, textvariable=self.workout_intensity).grid(row=1, column=1, padx=5, pady=5)
+        tk.Label(self.workout_frame, text="Intensity (1-10):").grid(row=1, column=0, padx=5, pady=5, sticky=tk.E)
+        tk.Entry(self.workout_frame, textvariable=self.workout_intensity).grid(row=1, column=1, padx=5, pady=5)
 
-        tk.Label(workout_frame, text="Calories Burned:").grid(row=2, column=0, padx=5, pady=5, sticky=tk.E)
-        tk.Entry(workout_frame, textvariable=self.calories_burned).grid(row=2, column=1, padx=5, pady=5)
+        tk.Label(self.workout_frame, text="Calories Burned:").grid(row=2, column=0, padx=5, pady=5, sticky=tk.E)
+        tk.Entry(self.workout_frame, textvariable=self.calories_burned).grid(row=2, column=1, padx=5, pady=5)
 
-        log_button = tk.Button(workout_frame, text="Log Workout", command=self.log_workout)
+        log_button = tk.Button(self.workout_frame, text="Log Workout", command=self.log_workout)
         log_button.grid(row=3, columnspan=2, pady=10)
 
+    def create_nutrition_monitoring(self):
         # Nutrition Monitoring Section
-        nutrition_frame = tk.LabelFrame(self.master, text="Nutrition Monitoring", padx=10, pady=10)
-        nutrition_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+        self.nutrition_frame = tk.LabelFrame(self.master, text="Nutrition Monitoring", padx=10, pady=10)
 
-        tk.Label(nutrition_frame, text="Food Entry:").grid(row=0, column=0, padx=5, pady=5, sticky=tk.E)
-        tk.Entry(nutrition_frame, textvariable=self.food_entry).grid(row=0, column=1, padx=5, pady=5)
+        tk.Label(self.nutrition_frame, text="Food Entry:").grid(row=0, column=0, padx=5, pady=5, sticky=tk.E)
+        tk.Entry(self.nutrition_frame, textvariable=self.food_entry).grid(row=0, column=1, padx=5, pady=5)
 
-        log_food_button = tk.Button(nutrition_frame, text="Log Food", command=self.log_food)
+        log_food_button = tk.Button(self.nutrition_frame, text="Log Food", command=self.log_food)
         log_food_button.grid(row=1, columnspan=2, pady=10)
 
-    def log_workout(self):
-        duration = self.workout_duration.get()
-        intensity = self.workout_intensity.get()
-        calories = self.calories_burned.get()
+    def show_workout_frame(self):
+        self.nutrition_frame.pack_forget()
+        self.workout_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
-        # Placeholder action (to be implemented)
-        messagebox.showinfo("Workout Logged", f"Workout Logged:\nDuration: {duration} mins\nIntensity: {intensity}\nCalories Burned: {calories}")
+    def show_nutrition_frame(self):
+        self.workout_frame.pack_forget()
+        self.nutrition_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+
+    def log_workout(self):
+        try:
+            duration = int(self.workout_duration.get())
+            intensity = int(self.workout_intensity.get())
+            calories = float(self.calories_burned.get())
+
+            # Placeholder action (to be implemented)
+            messagebox.showinfo("Workout Logged", f"Workout Logged:\nDuration: {duration} mins\nIntensity: {intensity}\nCalories Burned: {calories}")
+
+        except ValueError:
+            messagebox.showerror("Error", "Please enter valid numeric values.")
 
     def log_food(self):
         food_entry = self.food_entry.get()
 
-        # Placeholder action (to be implemented)
-        messagebox.showinfo("Food Logged", f"Food Logged:\nEntry: {food_entry}")
+        if food_entry.strip() == "":
+            messagebox.showerror("Error", "Food entry cannot be empty.")
+        else:
+            # Placeholder action (to be implemented)
+            messagebox.showinfo("Food Logged", f"Food Logged:\nEntry: {food_entry}")
 
 def main():
     root = tk.Tk()
@@ -65,3 +91,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
