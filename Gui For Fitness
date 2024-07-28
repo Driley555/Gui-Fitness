@@ -1,97 +1,153 @@
+"""
+Author: Dylan Riley
+Date written: 07/21/24
+"""
+
 import tkinter as tk
 from tkinter import messagebox
 
 class FitnessTrackerApp:
     def __init__(self, master):
-        self.master = master
-        self.master.title("Fitness Tracker")
+        """
+        Initializes the FitnessTrackerApp class.
+        
+        Parameters:
+        master (tk.Tk): The main window of the application.
+        
+        Sets up the main application window and initializes variables.
+        """
+        self.master = master  # Reference to the main window
+        self.master.title("Fitness Tracker")  # Title of the main window
 
-        # Initialize variables
-        self.workout_duration = tk.StringVar()
-        self.workout_intensity = tk.StringVar()
-        self.calories_burned = tk.StringVar()
-        self.food_entry = tk.StringVar()
+        # Initialize variables for storing user inputs
+        self.workout_duration = tk.StringVar()  # Duration of workout in minutes
+        self.workout_intensity = tk.StringVar()  # Intensity level of workout (1-10)
+        self.calories_burned = tk.StringVar()  # Calories burned during workout
+        self.food_entry = tk.StringVar()  # Description of food consumed
 
-        # Create main frames
+        # Create main frames for the application
         self.create_navigation()
         self.create_workout_logging()
         self.create_nutrition_monitoring()
 
     def create_navigation(self):
-        # Navigation buttons
-        navigation_frame = tk.Frame(self.master)
-        navigation_frame.pack(pady=10)
+        """
+        Creates the navigation buttons to switch between different sections.
+        
+        Adds buttons to the navigation frame for "Workout Logging" and "Nutrition Monitoring".
+        """
+        navigation_frame = tk.Frame(self.master)  # Create a frame for navigation buttons
+        navigation_frame.pack(pady=10)  # Add padding around the frame
 
+        # Button to switch to Workout Logging section
         workout_button = tk.Button(navigation_frame, text="Workout Logging", command=self.show_workout_frame)
-        workout_button.grid(row=0, column=0, padx=10)
+        workout_button.grid(row=0, column=0, padx=10)  # Place the button in the grid
 
+        # Button to switch to Nutrition Monitoring section
         nutrition_button = tk.Button(navigation_frame, text="Nutrition Monitoring", command=self.show_nutrition_frame)
-        nutrition_button.grid(row=0, column=1, padx=10)
+        nutrition_button.grid(row=0, column=1, padx=10)  # Place the button in the grid
 
     def create_workout_logging(self):
-        # Workout Logging Section
+        """
+        Creates the Workout Logging section with input fields and log button.
+        
+        Defines the layout and widgets for logging workout details.
+        """
         self.workout_frame = tk.LabelFrame(self.master, text="Workout Logging", padx=10, pady=10)
+        # Create a LabelFrame for Workout Logging section with padding
 
-        # Workout Entry Widgets
+        # Label and Entry for workout duration
         tk.Label(self.workout_frame, text="Duration (mins):").grid(row=0, column=0, padx=5, pady=5, sticky=tk.E)
         tk.Entry(self.workout_frame, textvariable=self.workout_duration).grid(row=0, column=1, padx=5, pady=5)
 
+        # Label and Entry for workout intensity
         tk.Label(self.workout_frame, text="Intensity (1-10):").grid(row=1, column=0, padx=5, pady=5, sticky=tk.E)
         tk.Entry(self.workout_frame, textvariable=self.workout_intensity).grid(row=1, column=1, padx=5, pady=5)
 
+        # Label and Entry for calories burned
         tk.Label(self.workout_frame, text="Calories Burned:").grid(row=2, column=0, padx=5, pady=5, sticky=tk.E)
         tk.Entry(self.workout_frame, textvariable=self.calories_burned).grid(row=2, column=1, padx=5, pady=5)
 
+        # Button to log the workout details
         log_button = tk.Button(self.workout_frame, text="Log Workout", command=self.log_workout)
-        log_button.grid(row=3, columnspan=2, pady=10)
+        log_button.grid(row=3, columnspan=2, pady=10)  # Place the button across two columns
 
     def create_nutrition_monitoring(self):
-        # Nutrition Monitoring Section
+        """
+        Creates the Nutrition Monitoring section with input fields and log button.
+        
+        Defines the layout and widgets for logging food entries.
+        """
         self.nutrition_frame = tk.LabelFrame(self.master, text="Nutrition Monitoring", padx=10, pady=10)
+        # Create a LabelFrame for Nutrition Monitoring section with padding
 
+        # Label and Entry for food entry
         tk.Label(self.nutrition_frame, text="Food Entry:").grid(row=0, column=0, padx=5, pady=5, sticky=tk.E)
         tk.Entry(self.nutrition_frame, textvariable=self.food_entry).grid(row=0, column=1, padx=5, pady=5)
 
+        # Button to log the food entry
         log_food_button = tk.Button(self.nutrition_frame, text="Log Food", command=self.log_food)
-        log_food_button.grid(row=1, columnspan=2, pady=10)
+        log_food_button.grid(row=1, columnspan=2, pady=10)  # Place the button across two columns
 
     def show_workout_frame(self):
-        self.nutrition_frame.pack_forget()
-        self.workout_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+        """
+        Displays the Workout Logging section and hides the Nutrition Monitoring section.
+        """
+        self.nutrition_frame.pack_forget()  # Hide the Nutrition Monitoring section
+        self.workout_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)  # Show the Workout Logging section
 
     def show_nutrition_frame(self):
-        self.workout_frame.pack_forget()
-        self.nutrition_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+        """
+        Displays the Nutrition Monitoring section and hides the Workout Logging section.
+        """
+        self.workout_frame.pack_forget()  # Hide the Workout Logging section
+        self.nutrition_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)  # Show the Nutrition Monitoring section
 
     def log_workout(self):
+        """
+        Validates and logs the workout details entered by the user.
+        
+        Displays a message box with the workout details if inputs are valid.
+        Shows an error message if inputs are invalid.
+        """
         try:
-            duration = int(self.workout_duration.get())
-            intensity = int(self.workout_intensity.get())
-            calories = float(self.calories_burned.get())
+            # Retrieve and convert user inputs
+            duration = int(self.workout_duration.get())  # Convert duration to integer
+            intensity = int(self.workout_intensity.get())  # Convert intensity to integer
+            calories = float(self.calories_burned.get())  # Convert calories to float
 
-            # Placeholder action (to be implemented)
+            # Display a message box with the logged workout details
             messagebox.showinfo("Workout Logged", f"Workout Logged:\nDuration: {duration} mins\nIntensity: {intensity}\nCalories Burned: {calories}")
 
         except ValueError:
+            # Display an error message if the input values are not valid
             messagebox.showerror("Error", "Please enter valid numeric values.")
 
     def log_food(self):
-        food_entry = self.food_entry.get()
+        """
+        Validates and logs the food entry provided by the user.
+        
+        Displays a message box with the food entry if it is not empty.
+        Shows an error message if the food entry is empty.
+        """
+        food_entry = self.food_entry.get()  # Retrieve the food entry
 
         if food_entry.strip() == "":
+            # Display an error message if the food entry is empty
             messagebox.showerror("Error", "Food entry cannot be empty.")
         else:
-            # Placeholder action (to be implemented)
+            # Display a message box with the logged food entry
             messagebox.showinfo("Food Logged", f"Food Logged:\nEntry: {food_entry}")
 
 def main():
-    root = tk.Tk()
-    app = FitnessTrackerApp(root)
-    root.mainloop()
+    """
+    Main function to start the Fitness Tracker Application.
+    
+    Initializes the Tkinter root window and runs the application.
+    """
+    root = tk.Tk()  # Create the main Tkinter window
+    app = FitnessTrackerApp(root)  # Initialize the FitnessTrackerApp with the main window
+    root.mainloop()  # Run the Tkinter event loop
 
 if __name__ == "__main__":
     main()
-
-
-
-
